@@ -320,7 +320,7 @@ function badge(x){
   const cc=CLSCSS[x.cls]||'';
   const ecc=x.e==='D'?'Eccedenza Dare':x.e==='A'?'Eccedenza Avere':x.e==='D/A'?'Dare o Avere':'\u2014';
   return `<div class="badges">
-    <span class="b ${cc}">${x.cls}</span>
+    <span class="b ${cc}">${x.cls3}</span>
     ${x.rt?`<span class="b" style="color:var(--red);border-color:var(--red)">conto rettificativo</span>`:''}
     <span class="b">${x.de==='SP'?'Situazione patrimoniale':x.de==='SE'?'Situazione economica':'fuori prospetti'}</span>
     <span class="b ${x.e==='D'?'dare':x.e==='A'?'avere':''}">${ecc}</span></div>`;
