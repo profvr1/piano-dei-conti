@@ -112,6 +112,7 @@ button.ghost.on{border-color:var(--acc);color:var(--acc)}
 .fb.ok{background:color-mix(in srgb,var(--green) 13%,transparent);border:1px solid var(--green)}
 .fb.no{background:color-mix(in srgb,var(--red) 13%,transparent);border:1px solid var(--red)}
 .fb strong{display:block;margin-bottom:4px}
+.fb .fbc{display:block;font-size:11px;letter-spacing:.04em;font-weight:700;color:var(--soft);margin-bottom:5px}
 
 .macro{margin:22px 0 0}
 .macro h2{font-size:16.5px;display:flex;gap:9px;align-items:baseline;padding-bottom:7px;border-bottom:2px solid var(--ink);line-height:1.3}
@@ -445,20 +446,20 @@ function domanda(x,m){
       const altre=shuffle(opts.filter(o=>o!==giusta)).slice(0,4);
       opts=shuffle([giusta,...altre]);
     }
-    return {kind:'Classificazione del conto',text:x.d,sub:x.c+' \u00b7 '+x.g,opts,giusta,
+    return {kind:'Classificazione del conto',text:x.d,sub:'',opts,giusta,
       spieg:(x.rt?'\u00c8 un conto rettificativo. ':'')+posizione(x)};
   }
-  if(m==='sez') return {kind:'Dove va a finire?',text:x.d,sub:x.c+' \u00b7 '+x.g,opts:SEZ.slice(),giusta:x.sez,spieg:x.cls3+'. '+posizione(x)};
-  if(m==='ecc') return {kind:'Eccedenza',text:x.d,sub:x.c+' \u00b7 '+x.g,
+  if(m==='sez') return {kind:'Dove va a finire?',text:x.d,sub:'',opts:SEZ.slice(),giusta:x.sez,spieg:x.cls3+'. '+posizione(x)};
+  if(m==='ecc') return {kind:'Eccedenza',text:x.d,sub:'',
     opts:['Dare','Avere','Dare o Avere'],giusta:x.e==='D'?'Dare':x.e==='A'?'Avere':'Dare o Avere',
     spieg:x.cls3+'. '+posizione(x)};
-  if(m==='nat') return {kind:'Natura del conto',text:x.d,sub:x.c+' \u00b7 '+x.g,
+  if(m==='nat') return {kind:'Natura del conto',text:x.d,sub:'',
     opts:['Finanziario','Economico','Transitorio','Conto d\u2019ordine'],giusta:x.t,
     spieg:'Pi\u00f9 precisamente: '+x.cls3+'. '+posizione(x)};
   const mie=etichettaVoce(x);
   const altre=[...new Set(CONTI.filter(y=>y.sez===x.sez&&etichettaVoce(y)!==mie&&etichettaVoce(y)!=='\u2014').map(etichettaVoce))];
   const opts=shuffle([mie,...shuffle(altre).slice(0,3)]);
-  return {kind:'La voce esatta',text:x.d,sub:x.c+' \u00b7 '+x.g,opts,giusta:mie,
+  return {kind:'La voce esatta',text:x.d,sub:'',opts,giusta:mie,
     spieg:x.cls3+' \u00b7 eccedenza '+x.e};
 }
 function nuova(){
@@ -479,7 +480,8 @@ function rispondi(btn,q){
   const p=peso(corrente);
   ST.peso[corrente.c]=giusto?Math.max(1,p-1):Math.min(9,p+3);
   save(); aggiornaStat();
-  $('#fb').innerHTML=`<div class="fb ${giusto?'ok':'no'}"><strong>${giusto?'Giusto.':'No: '+q.giusta}</strong>${q.spieg}</div>`;
+  $('#fb').innerHTML=`<div class="fb ${giusto?'ok':'no'}"><strong>${giusto?'Giusto.':'No: '+q.giusta}</strong>
+    <span class="fbc">${corrente.c} \u00b7 ${corrente.g}</span>${q.spieg}</div>`;
   $('#next').classList.remove('hide');
 }
 function aggiornaStat(){
